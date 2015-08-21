@@ -1,0 +1,51 @@
+<%= form_for @todo_item, :html => { :class => "form-horizontal todo_item" } do |f| %>
+
+    <% if @todo_item.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@todo_item.errors.count, "error") %> prohibited this todo_item from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @todo_item.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :title, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :title, :class => 'form-control' %>
+    </div>
+    <%= error_span(@todo_item[:title]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :description, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :description, :class => 'form-control' %>
+    </div>
+    <%= error_span(@todo_item[:description]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :due, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :due, :class => 'form-control', :data => {:provide => 'datepicker', :'date-autoclose' => true} %>
+    </div>
+    <%= error_span(@todo_item[:due]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :project, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.collection_select(:project_id, Project.all, :id, :name) %>
+    </div>
+    <%= error_span(@todo_item[:project]) %>
+  </div>
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+            todo_items_path, :class => 'btn btn-default' %>
+
+<% end %>
